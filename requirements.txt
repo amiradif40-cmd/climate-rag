@@ -1,0 +1,22 @@
+# ClimateRAG — Requirements
+# Python 3.10+
+
+# Extraction PDF
+pymupdf>=1.24.0
+
+# NLP & Embeddings
+sentence-transformers>=3.0.0
+torch>=2.0.0
+numpy>=1.24.0
+
+# Vector DB
+faiss-cpu>=1.7.4
+
+# API
+requests>=2.31.0
+
+# Frontend
+streamlit>=1.38.0
+
+# Env management
+python-dotenv>=1.0.0
