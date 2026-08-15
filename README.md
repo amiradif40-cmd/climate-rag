@@ -62,7 +62,7 @@ Exemples de sources recommandées :
 - **IPCC AR6 Synthesis Report**
 - **Copernicus Climate Change Service**
 
-> 💡 Commence avec **3 à 5 PDF maximum** pour tester le pipeline.
+
 
 ### 2. Lancer le pipeline
 
@@ -71,12 +71,12 @@ python scripts/ingest.py
 ```
 
 Ce script va :
-1. 📚 Charger tous les PDF
-2. 🧹 Nettoyer le texte
-3. ✂️ Découper en chunks
-4. 🧠 Générer les embeddings (télécharge BGE-M3 au 1er lancement ~2GB)
-5. 📦 Construire l'index FAISS
-6. 🔍 Tester 3 questions de recherche
+1.  Charger tous les PDF
+2.  Nettoyer le texte
+3.  Découper en chunks
+4.  Générer les embeddings (télécharge BGE-M3 au 1er lancement ~2GB)
+5.  Construire l'index FAISS
+6.  Tester 3 questions de recherche
 
 ### 3. Résultat attendu
 
@@ -106,16 +106,3 @@ climate-rag/
 ├── requirements.txt
 └── README.md
 ```
-
-## Prochaines étapes (Phase 2)
-
-- [ ] Reranker (CrossEncoder)
-- [ ] LLM local via Ollama
-- [ ] Prompt scientifique avec citations
-- [ ] API FastAPI
-- [ ] Interface Streamlit
-- [ ] Évaluation du RAG
-
----
-
-**Projet pédagogique** — Construit étape par étape pour comprendre chaque brique du RAG.
