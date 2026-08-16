@@ -72,6 +72,26 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     [data-testid="stChatMessage"] > div:first-child { display: none !important; }
     [data-testid="stChatInput"] { padding: 0.5rem !important; }
     section[data-testid="stSidebar"] { width: 100% !important; }
+    /* AJOUT : contraste quiz mobile */
+    [data-testid="stRadio"] label,
+    [data-testid="stRadio"] span,
+    [data-testid="stRadio"] p {
+        color: var(--text) !important;
+        font-size: 0.9rem !important;
+    }
+    [data-testid="stRadio"] > div > div > div {
+        background: transparent !important;
+    }
+}
+
+/* AJOUT : contraste radio quiz (tous ecrans) */
+[data-testid="stRadio"] label,
+[data-testid="stRadio"] span,
+[data-testid="stRadio"] p {
+    color: var(--text) !important;
+}
+[data-testid="stRadio"] > div > div > div {
+    background: transparent !important;
 }
 
 .cr-header { text-align: center; padding: 1rem 0 0.25rem; }
@@ -124,6 +144,7 @@ section[data-testid="stSidebar"] { background: var(--surface-muted); border-righ
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
 </style>
 """, unsafe_allow_html=True)
 
