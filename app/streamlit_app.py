@@ -180,90 +180,94 @@ section[data-testid="stSidebar"] { background: var(--surface-muted); border-righ
 
 # --- CONTENU ---
 FACTS = [
-    {"fact": "Le climat, c'est la meteo sur le long terme. Une vague de froid en hiver ne contredit pas le rechauffement climatique global.", "source": "GIEC AR6, WGI"},
-    {"fact": "La chaleur extreme est l'un des phenomenes meteorologiques les plus meurtriers. Les canicules peuvent causer de nombreuses victimes, souvent de maniere indirecte (aggravation de maladies cardiaques, respiratoires, renales).", "source": "OMM / Sante publique France"},
-    {"fact": "L'ocean a absorbe environ 90 % de la chaleur supplementaire generee par les activites humaines depuis les annees 1970.", "source": "GIEC AR6, WGI"},
-    {"fact": "En 2023, la temperature mondiale annuelle a atteint environ +1,48 C par rapport a l'ere preindustrielle, et 2024 a depasse +1,5 C. Ces depassements temporaires ne signifient pas que l'objectif de long terme de l'Accord de Paris est deja perdu, mais montrent l'acceleration du rechauffement.", "source": "Copernicus C3S / OMM, 2024-2025"},
-    {"fact": "Les vagues de chaleur oceaniques sont devenues nettement plus frequentes et plus intenses depuis les annees 1980. Elles menacent les recifs coralliens et de nombreux ecosystemes marins.", "source": "GIEC AR6, WGI"},
-    {"fact": "Une journee de canicule en ville peut etre 2 a 8 C plus chaude qu'a la campagne a cause de l'ilot de chaleur urbain. Le beton et l'asphalte emmagasinent la chaleur la nuit.", "source": "GIEC AR6, WGII"},
-    {"fact": "Le jet-stream est un puissant courant d'air en haute altitude qui guide les depressions et les anticyclones. Son ralentissement peut bloquer les vagues de chaleur sur une meme region.", "source": "Meteo-France / CNRS"},
-    {"fact": "Les glaciers alpins ont perdu une grande partie de leur masse depuis 1900. Leur fonte s'accelere avec le rechauffement.", "source": "GIEC AR6, WGI"},
-    {"fact": "Le permafrost siberien et arctique renferme d'importantes reserves de carbone. Son rechauffement pourrait liberer du CO2 et du methane, amplifiant le rechauffement.", "source": "GIEC AR6, WGI"},
-    {"fact": "L'humidite joue un role cle dans les canicules : a temperature identique, un air sec est moins dangereux qu'un air humide, car la sueur s'evapore mal quand l'air est deja sature.", "source": "Meteo-France / OMM"},
-    {"fact": "La glace de mer arctique fond en ete, mais cela ne fait pas monter le niveau des oceans (comme la glace dans un verre). En revanche, la fonte des glaciers terrestres et des calottes, si.", "source": "GIEC AR6, WGI"},
-    {"fact": "Le rechauffement climatique ne se traduit pas seulement par des temperatures plus chaudes : il deplace aussi la distribution des temperatures, rendant les extremes plus frequents.", "source": "GIEC AR6, WGI"},
-    {"fact": "Les feux de foret de grande ampleur, comme en Australie en 2019-2020 ou au Canada en 2023, sont intensifies par les conditions chaudes et seches liees au changement climatique.", "source": "GIEC AR6, WGII"},
-    {"fact": "L'Accord de Paris (2015) vise a contenir le rechauffement 'nettement en dessous de 2 C' et a poursuivre les efforts pour le limiter a 1,5 C. Ce sont des objectifs politiques, pas des quotas individuels.", "source": "Accord de Paris / GIEC"},
-    {"fact": "Le GIEC estime que le rechauffement observe entre 2011-2020 et 1850-1900 est d'environ 1,1 C. Il est 'sans equivoque' que ce rechauffement est du aux activites humaines.", "source": "GIEC AR6, WGI"},
-    {"fact": "La Terre n'est pas ronde : elle est legerement aplatie aux poles et renflee a l'equateur, comme une orange pressee. Cette forme influence la distribution de la chaleur.", "source": "NASA / geodesie"},
-    {"fact": "Si vous etes ne avant 1988, vous n'avez jamais vecu une annee plus froide que la moyenne du 20e siecle. Chaque annee depuis est au-dessus.", "source": "GIEC AR6, WGI / NASA GISS"},
-    {"fact": "Les pissenlits poussent mieux dans les villes chaudes qu'a la campagne. L'ilot de chaleur urbain les fait fleurir plus tot et plus gros.", "source": "Etudes d'urbanisation vegetale"},
-    {"fact": "Le CO2 que vous expirez en une journee (environ 1 kg) ne contribue pas au rechauffement : il fait partie du cycle naturel du carbone. Le probleme, c'est le carbone fossile sorti du sous-sol apres des millions d'annees.", "source": "GIEC AR6, WGI"},
-    {"fact": "Les moustiques aiment le changement climatique. Plus il fait chaud et humide, plus ils se reproduisent vite. Certaines maladies comme le dengue gagnent du terrain vers le nord de l'Europe.", "source": "GIEC AR6, WGII / OMS"},
+    {"fact": "Le climat correspond à l'évolution statistique du temps atmosphérique sur le long terme. Une vague de froid hivernale ne contredit pas à elle seule le réchauffement climatique global.", "source": "GIEC AR6, WGI"},
+    {"fact": "La chaleur extrême est l'un des phénomènes météorologiques les plus meurtriers. Les canicules peuvent avoir de graves conséquences sanitaires, souvent de manière indirecte (aggravation de maladies cardiaques, respiratoires, rénales).", "source": "OMM / Santé publique France"},
+    {"fact": "Les océans ont absorbé environ 90 % de l'excès de chaleur du système climatique depuis les années 1970.", "source": "GIEC AR6, WGI"},
+    {"fact": "En 2024, la température moyenne mondiale a été d'environ +1,60 °C par rapport à la période 1850-1900, après environ +1,48 °C en 2023 selon Copernicus. Le dépassement de 1,5 °C pendant une année civile ne signifie pas à lui seul que la limite de long terme de l'Accord de Paris est définitivement dépassée.", "source": "Copernicus C3S, Global Climate Highlights 2024"},
+    {"fact": "Les vagues de chaleur marines sont devenues nettement plus fréquentes et/ou plus intenses depuis les années 1980. Elles menacent les récifs coralliens et de nombreux écosystèmes marins.", "source": "GIEC AR6, WGI"},
+    {"fact": "Lors d'une période chaude, l'îlot de chaleur urbain peut maintenir des températures plus élevées en ville qu'à la campagne, particulièrement la nuit. L'écart dépend fortement de la ville, de la météo et des conditions locales et peut atteindre plusieurs degrés.", "source": "Météo-France — Îlot de chaleur urbain"},
+    {"fact": "Le jet-stream est un courant d'air rapide en haute altitude qui influence la trajectoire des systèmes météorologiques. Certaines configurations de blocage atmosphérique associées à la circulation du jet-stream peuvent favoriser la persistance de périodes de chaleur dans une région.", "source": "GIEC AR6, WG1"},
+    {"fact": "Les glaciers alpins ont fortement perdu de la masse depuis 1900. Leur fonte s'accélère avec le réchauffement.", "source": "GIEC AR6, WGI"},
+    {"fact": "Le pergélisol sibérien et arctique renferme d'importantes quantités de carbone. Son réchauffement pourrait libérer du CO2 et du méthane, contribuant à amplifier le réchauffement.", "source": "GIEC AR6, WGI"},
+    {"fact": "L'humidité influence fortement le stress thermique : lorsque l'air est très humide, la sueur s'évapore moins efficacement et le corps évacue plus difficilement sa chaleur. Le risque dépend également de la température, du vent, du rayonnement et de la vulnérabilité individuelle.", "source": "OMM / OMS"},
+    {"fact": "La glace de mer arctique fond en été, mais cela ne fait pas monter le niveau des océans (comme la glace dans un verre). En revanche, la fonte des glaciers terrestres et des calottes glaciaires continentales, si.", "source": "GIEC AR6, WGI"},
+    {"fact": "Le changement climatique ne se traduit pas seulement par des températures plus chaudes : il modifie aussi la distribution des températures et augmente la fréquence et/ou l'intensité de nombreux extrêmes chauds.", "source": "GIEC AR6, WGI"},
+    {"fact": "Les feux de forêt de grande ampleur, comme en Australie en 2019-2020 ou au Canada en 2023, sont intensifiés par les conditions chaudes et sèches liées au changement climatique dans plusieurs régions.", "source": "GIEC AR6, WGII"},
+    {"fact": "L'Accord de Paris (2015) vise à maintenir l'augmentation de la température mondiale nettement en dessous de 2 °C et à poursuivre les efforts pour la limiter à 1,5 °C. Ce sont des objectifs politiques collectifs, pas des quotas individuels.", "source": "Accord de Paris / GIEC"},
+    {"fact": "Le GIEC estime que le réchauffement moyen sur 2011-2020 par rapport à 1850-1900 est d'environ 1,1 °C. Il est sans équivoque que ce réchauffement est dû aux activités humaines.", "source": "GIEC AR6, WGI"},
+    {"fact": "La Terre n'est pas une sphère parfaite : elle est légèrement aplatie aux pôles et renflée à l'équateur. Cette forme influence la distribution de la chaleur à sa surface.", "source": "NASA / géodésie"},
+    {"fact": "Le CO2 que vous expirez en une journée (environ 1 kg) ne contribue pas au réchauffement : il fait partie du cycle naturel du carbone. Le problème vient du carbone fossile (charbon, pétrole, gaz) sorti du sous-sol après des millions d'années.", "source": "GIEC AR6, WGI"},
+    {"fact": "Le changement climatique peut modifier la répartition géographique et la saison d'activité de certains moustiques vecteurs de maladies. Des conditions plus chaudes peuvent notamment favoriser l'établissement ou l'extension de certains vecteurs dans de nouvelles régions, mais leur évolution dépend également de l'humidité, des précipitations, des habitats et d'autres facteurs environnementaux.", "source": "GIEC AR6 WGII / OMS"},
+    {"fact": "Les concentrations de CO2 dans l'atmosphère sont aujourd'hui nettement plus élevées qu'elles ne l'ont été pendant au moins plusieurs centaines de milliers d'années. L'augmentation récente est principalement due aux activités humaines, notamment à la combustion des combustibles fossiles.", "source": "GIEC AR6, WGI"},
+    {"fact": "Le niveau moyen mondial de la mer augmente depuis plusieurs décennies. Cette hausse est principalement due au réchauffement de l'océan, qui provoque sa dilatation thermique, et à la fonte des glaciers et des calottes glaciaires continentales.", "source": "GIEC AR6, WGI"},
 ]
 
 SUGGESTED_QUESTIONS = [
-    "Pourquoi les canicules deviennent-elles plus frequentes ?",
-    "Quel est le role du changement climatique dans les vagues de chaleur en Europe ?",
-    "Quels sont les impacts des canicules sur la sante humaine ?",
-    "Qu'est-ce que le jet-stream et comment influence-t-il la meteo en Europe ?",
-    "Quel budget carbone reste-t-il pour limiter le rechauffement a 1,5 C ?",
+    "Pourquoi les canicules deviennent-elles plus fréquentes ?",
+    "Quel est le rôle du changement climatique dans les vagues de chaleur en Europe ?",
+    "Quels sont les impacts des canicules sur la santé humaine ?",
+    "Qu'est-ce que le jet-stream et comment influence-t-il la météo en Europe ?",
+    "Quel budget carbone reste-t-il pour avoir une probabilité donnée de limiter le réchauffement à 1,5 °C ?",
+    "Pourquoi le niveau de la mer augmente-t-il ?",
+    "Quel rôle les océans jouent-ils dans le réchauffement climatique ?",
+    "Quelle est la différence entre météo et climat ?",
+    "Pourquoi les nuits peuvent-elles rester particulièrement chaudes pendant une canicule en ville ?",
 ]
 
 QUIZ_QUESTIONS = [
     {
-        "question": "Quelle est la principale cause du rechauffement climatique observe depuis le milieu du 20e siecle ?",
-        "options": ["Les variations naturelles du soleil", "Les activites humaines (emissions de gaz a effet de serre)", "Les eruptions volcaniques", "Le cycle naturel de la Terre"],
+        "question": "Quelle est la principale cause du réchauffement climatique observé depuis le milieu du 20e siècle ?",
+        "options": ["Les variations naturelles du soleil", "Les activités humaines (émissions de gaz à effet de serre)", "Les éruptions volcaniques", "Le cycle naturel de la Terre"],
         "correct": 1,
-        "explanation": "Le GIEC AR6 est categorique : le rechauffement observe depuis 1950 est 'sans equivoque' du aux activites humaines, principalement la combustion d'energies fossiles."
+        "explanation": "Le GIEC AR6 est catégorique : le réchauffement observé depuis 1950 est sans équivoque dû aux activités humaines, principalement la combustion d'énergies fossiles."
     },
     {
-        "question": "Quel gaz a effet de serre est le principal responsable du rechauffement actuel ?",
-        "options": ["Le methane (CH4)", "Le dioxyde de carbone (CO2)", "L'ozone (O3)", "La vapeur d'eau"],
+        "question": "Quel gaz à effet de serre est le principal responsable du réchauffement actuel ?",
+        "options": ["Le méthane (CH4)", "Le dioxyde de carbone (CO2)", "L'ozone (O3)", "La vapeur d'eau"],
         "correct": 1,
-        "explanation": "Le CO2, emis surtout par la combustion du charbon, du petrole et du gaz, est le principal contributeur au rechauffement d'origine humaine."
+        "explanation": "Le CO2, émis surtout par la combustion du charbon, du pétrole et du gaz, est le principal contributeur au réchauffement d'origine humaine."
     },
     {
-        "question": "Selon le GIEC (AR6), de combien la temperature mondiale a-t-elle deja augmente par rapport a l'ere preindustrielle ?",
-        "options": ["Environ 0,5 C", "Environ 1,1 C", "Environ 2,5 C", "Environ 4 C"],
+        "question": "Selon le GIEC (AR6), de combien la température mondiale a-t-elle déjà augmenté par rapport à l'ère préindustrielle ?",
+        "options": ["Environ 0,5 °C", "Environ 1,1 °C", "Environ 2,5 °C", "Environ 4 °C"],
         "correct": 1,
-        "explanation": "L'AR6 estime le rechauffement a environ 1,1 C entre la periode 2011-2020 et la periode de reference 1850-1900."
+        "explanation": "L'AR6 estime le réchauffement à environ 1,1 °C entre la période 2011-2020 et la période de référence 1850-1900."
     },
     {
-        "question": "Quelle part de la chaleur supplementaire generee par les activites humaines les oceans ont-ils absorbee depuis les annees 1970 ?",
+        "question": "Quelle part de la chaleur supplémentaire générée par les activités humaines les océans ont-ils absorbée depuis les années 1970 ?",
         "options": ["Environ 25 %", "Environ 50 %", "Environ 90 %", "Environ 10 %"],
         "correct": 2,
-        "explanation": "Les oceans jouent un role de regulateur thermique majeur : environ 90 % de la chaleur excedentaire y a ete absorbee."
+        "explanation": "Les océans jouent un rôle de régulateur thermique majeur : environ 90 % de la chaleur excédentaire y a été absorbée."
     },
     {
         "question": "Qu'est-ce que le jet-stream ?",
-        "options": ["Un courant marin chaud", "Un puissant courant atmospherique en haute altitude", "Un type de nuage de canicule", "Une mesure de la pollution de l'air"],
+        "options": ["Un courant marin chaud", "Un puissant courant atmosphérique en haute altitude", "Un type de nuage de canicule", "Une mesure de la pollution de l'air"],
         "correct": 1,
-        "explanation": "Le jet-stream est un puissant courant d'air en haute altitude qui guide les systemes meteorologiques. Son affaiblissement peut bloquer les vagues de chaleur."
+        "explanation": "Le jet-stream est un courant d'air rapide en haute altitude qui influence la trajectoire des systèmes météorologiques. Certaines configurations de circulation et de blocage atmosphérique peuvent contribuer à la persistance de conditions météorologiques extrêmes, notamment de périodes de chaleur."
     },
     {
         "question": "Quel est l'objectif central de l'Accord de Paris (2015) ?",
-        "options": ["Limiter le rechauffement nettement en dessous de 2 C et poursuivre vers 1,5 C", "Reduire la population mondiale", "Interdire toute energie fossile d'ici 2030", "Stabiliser le prix du petrole"],
+        "options": ["Limiter le réchauffement nettement en dessous de 2 °C et poursuivre vers 1,5 °C", "Réduire la population mondiale", "Interdire toute énergie fossile d'ici 2030", "Stabiliser le prix du pétrole"],
         "correct": 0,
-        "explanation": "L'Accord de Paris vise a contenir la hausse de la temperature mondiale nettement en dessous de 2 C, en poursuivant les efforts pour la limiter a 1,5 C."
+        "explanation": "L'Accord de Paris vise à contenir la hausse de la température mondiale nettement en dessous de 2 °C, en poursuivant les efforts pour la limiter à 1,5 °C."
     },
     {
         "question": "Que signifie le sigle GIEC ?",
-        "options": ["Groupe international des ecologistes certifies", "Groupe d'experts intergouvernemental sur l'evolution du climat", "Gestion internationale des emissions de carbone", "Groupe independant d'etude du climat"],
+        "options": ["Groupe international des écologistes certifiés", "Groupe d'experts intergouvernemental sur l'évolution du climat", "Gestion internationale des émissions de carbone", "Groupe indépendant d'étude du climat"],
         "correct": 1,
-        "explanation": "Le GIEC (IPCC en anglais) est l'organisme scientifique des Nations Unies charge d'evaluer les connaissances sur le changement climatique."
+        "explanation": "Le GIEC (IPCC en anglais) est l'organisme scientifique des Nations Unies chargé d'évaluer les connaissances sur le changement climatique."
     },
     {
-        "question": "Pourquoi une canicule en ville peut-elle etre plus dangereuse qu'a la campagne ?",
-        "options": ["Parce qu'il y a plus de monde", "A cause de l'ilot de chaleur urbain (beton et asphalte emmagasinent la chaleur)", "Parce que les villes sont plus proches du soleil", "A cause de la pollution uniquement"],
+        "question": "Quel phénomène explique que les températures restent souvent plus élevées en ville qu'à la campagne, notamment pendant la nuit ?",
+        "options": ["L'effet de serre naturel", "L'îlot de chaleur urbain", "La proximité des villes avec le Soleil", "La rotation plus rapide de la Terre en ville"],
         "correct": 1,
-        "explanation": "L'ilot de chaleur urbain peut rendre une journee de canicule 2 a 8 C plus chaude en ville qu'a la campagne. Le beton et l'asphalte emmagasinent la chaleur et la restituent la nuit."
+        "explanation": "L'îlot de chaleur urbain résulte notamment des propriétés des surfaces urbaines, de la faible végétalisation et de la chaleur stockée puis restituée par les bâtiments et les infrastructures. Le phénomène est particulièrement marqué la nuit."
     },
     {
-        "question": "Le CO2 que vous expirez en respirant contribue-t-il au rechauffement climatique ?",
-        "options": ["Oui, il faut donc moins respirer", "Non, il fait partie du cycle naturel du carbone", "Oui, mais seulement si on mange de la viande", "Non, car le CO2 humain est plus leger que celui des usines"],
+        "question": "Le CO2 que vous expirez en respirant contribue-t-il au réchauffement climatique ?",
+        "options": ["Oui, il faut donc moins respirer", "Non, il fait partie du cycle naturel du carbone", "Oui, mais seulement si on mange de la viande", "Non, car le CO2 humain est plus léger que celui des usines"],
         "correct": 1,
-        "explanation": "Le CO2 expire par les humains et les animaux fait partie du cycle naturel du carbone (absorbe par les plantes, reemis par la respiration). Le probleme vient du carbone fossile (charbon, petrole, gaz) sorti du sous-sol apres des millions d'annees."
+        "explanation": "Le CO2 expiré provient principalement du carbone récemment présent dans la biomasse et participe au cycle naturel du carbone. À l'inverse, la combustion des combustibles fossiles transfère vers l'atmosphère du carbone qui était stocké dans le sous-sol depuis des millions d'années, ce qui augmente durablement la concentration atmosphérique de CO2."
     },
 ]
 
@@ -298,16 +302,16 @@ def reset_quiz():
 @st.cache_resource(show_spinner=False)
 def load_rag():
     if not GROQ_API_KEY:
-        return None, "Cle API Groq manquante. Configurez-la dans les secrets Streamlit Cloud ou dans un fichier .env local."
+        return None, "Clé API Groq manquante. Configurez-la dans les secrets Streamlit Cloud ou dans un fichier .env local."
     if not RAG_AVAILABLE:
-        return None, "Modules RAG non disponibles. Verifiez que src/ est bien dans le PYTHONPATH."
+        return None, "Modules RAG non disponibles. Vérifiez que src/ est bien dans le PYTHONPATH."
     
     index_path = Path(FAISS_INDEX_PATH)
     faiss_file = index_path.with_suffix(".faiss")
     pkl_file = index_path.with_suffix(".pkl")
     
     if not (faiss_file.exists() and pkl_file.exists()):
-        return None, f"Index FAISS non trouve ({faiss_file.name} / {pkl_file.name}). Lancez d'abord : python scripts/ingest.py"
+        return None, f"Index FAISS non trouvé ({faiss_file.name} / {pkl_file.name}). Lancez d'abord : python scripts/ingest.py"
     
     try:
         embedder = Embedder()
@@ -321,12 +325,12 @@ def load_rag():
         return None, str(e)
 
 
-# --- EN-TETE ---
+# --- EN-TÊTE ---
 st.markdown("""
 <div class="cr-header">
     <div class="cr-eyebrow">Assistant scientifique</div>
     <h1 class="cr-title">ClimateRAG</h1>
-    <p class="cr-tagline">Posez vos questions sur le rechauffement climatique, les canicules et les evenements extremes - reponses fondees sur les rapports du GIEC, Copernicus et Meteo-France.</p>
+    <p class="cr-tagline">Posez vos questions sur le réchauffement climatique, les canicules et les événements extrêmes - réponses fondées sur les rapports du GIEC, Copernicus et Météo-France.</p>
     <div class="cr-stripe"></div>
 </div>
 """, unsafe_allow_html=True)
@@ -346,8 +350,8 @@ with st.sidebar:
             st.markdown(f'<div class="cr-quiz-question">{q["question"]}</div>', unsafe_allow_html=True)
             
             if not st.session_state.quiz_answered:
-                placeholder = "- Choisissez une reponse -"
-                choice = st.radio("Reponse", [placeholder] + q["options"], key=f"quiz_radio_{idx}", label_visibility="collapsed")
+                placeholder = "- Choisissez une réponse -"
+                choice = st.radio("Réponse", [placeholder] + q["options"], key=f"quiz_radio_{idx}", label_visibility="collapsed")
                 ready = choice != placeholder
                 if st.button("Valider", key="quiz_validate", type="primary", use_container_width=True, disabled=not ready):
                     st.session_state.quiz_selected = choice
@@ -359,9 +363,9 @@ with st.sidebar:
                 selected = st.session_state.quiz_selected
                 correct_answer = q["options"][q["correct"]]
                 if selected == correct_answer:
-                    st.success(f"Bonne reponse - {selected}")
+                    st.success(f"Bonne réponse - {selected}")
                 else:
-                    st.error(f"Pas tout a fait. Reponse : {correct_answer}")
+                    st.error(f"Pas tout à fait. Réponse : {correct_answer}")
                 st.caption(q["explanation"])
                 
                 is_last = idx + 1 >= total
@@ -380,7 +384,7 @@ with st.sidebar:
             if pct >= 80:
                 msg = "Expert du climat !"
             elif pct >= 50:
-                msg = "Bien joue, continuez comme ca !"
+                msg = "Bien joué, continuez comme ça !"
             else:
                 msg = "Discutez avec l'assistant pour en apprendre plus."
             
@@ -416,7 +420,7 @@ with clear_col:
             st.session_state.messages = []
             st.rerun()
 
-st.caption("Questions frequentes")
+st.caption("Questions fréquentes")
 new_prompt = None
 with st.container(key="chip_row"):
     chip_cols = st.columns(len(SUGGESTED_QUESTIONS))
@@ -426,14 +430,14 @@ with st.container(key="chip_row"):
                 new_prompt = q_text
 
 if not st.session_state.messages:
-    st.markdown('<p class="cr-empty-hint">Choisissez une question ci-dessus ou ecrivez la votre pour commencer.</p>', unsafe_allow_html=True)
+    st.markdown('<p class="cr-empty-hint">Choisissez une question ci-dessus ou écrivez la vôtre pour commencer.</p>', unsafe_allow_html=True)
 
 # --- HISTORIQUE ---
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
         if msg.get("sources"):
-            with st.expander(f"Sources utilisees ({len(msg['sources'])})"):
+            with st.expander(f"Sources utilisées ({len(msg['sources'])})"):
                 for src in msg["sources"]:
                     st.markdown(f"""
 <div class="cr-source">
@@ -474,7 +478,7 @@ if new_prompt:
         if answer:
             st.markdown(answer)
             if sources:
-                with st.expander(f"Sources utilisees ({len(sources)})"):
+                with st.expander(f"Sources utilisées ({len(sources)})"):
                     for src in sources:
                         st.markdown(f"""
 <div class="cr-source">
@@ -490,8 +494,8 @@ if new_prompt:
 # --- FOOTER ---
 st.markdown("""
 <div class="cr-footer">
-    ClimateRAG - Reponses fondees sur les rapports du GIEC (AR6), Copernicus et Meteo-France<br>
-    Les reponses sont generees automatiquement - verifiez toujours les sources originales.<br>
-    Fait avec conviction : comprendre le climat, c'est deja agir.
+    ClimateRAG - Réponses fondées sur les rapports du GIEC (AR6), Copernicus et Météo-France<br>
+    Les réponses sont générées automatiquement - vérifiez toujours les sources originales.<br>
+    Fait avec conviction : comprendre le climat, c'est déjà agir.
 </div>
 """, unsafe_allow_html=True)
