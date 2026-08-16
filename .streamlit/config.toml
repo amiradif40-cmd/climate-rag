@@ -1,0 +1,9 @@
+[server]
+maxUploadSize = 50
+
+[runner]
+fastReruns = false
+magicEnabled = false
+
+[browser]
+gatherUsageStats = false

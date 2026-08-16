@@ -4,16 +4,19 @@
 # Extraction PDF
 pymupdf>=1.24.0
 
-# NLP & Embeddings
+# NLP, Embeddings & LLM
 sentence-transformers>=3.0.0
+transformers>=4.40.0
 torch>=2.0.0
+torchvision>=0.15.0
 numpy>=1.24.0
+
+# API
+groq>=0.9.0
+requests>=2.31.0
 
 # Vector DB
 faiss-cpu>=1.7.4
-
-# API
-requests>=2.31.0
 
 # Frontend
 streamlit>=1.38.0
