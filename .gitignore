@@ -1,7 +1,13 @@
 .env
-data/index/*.faiss
-data/index/*.pkl
-#data/raw/**/*.pdf
+.venv/
 __pycache__/
 *.pyc
-.venv/
+*.pyo
+*.pyd
+.Python
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.streamlit/secrets.toml
+data/raw/**/*.pdf
