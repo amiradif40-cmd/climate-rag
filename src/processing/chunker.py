@@ -1,25 +1,25 @@
 """
-Découpage des documents en chunks (morceaux) pour le RAG.
-Un chunk = un passage de texte de taille contrôlée avec chevauchement.
+Decoupage des documents en chunks (morceaux) pour le RAG.
+Un chunk = un passage de texte de taille controlee avec chevauchement.
 """
 import os
 
 
-CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1500"))
-CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "200"))
+CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "2500"))
+CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "300"))
 
 
-def chunk_text(text: str, chunk_size: int = None, overlap: int = None) -> list[str]:
+def chunk_text(text, chunk_size=None, overlap=None):
     """
-    Découpe un texte en chunks avec chevauchement.
+    Decoupe un texte en chunks avec chevauchement.
 
     Args:
-        text: Texte à découper
-        chunk_size: Taille maximale d'un chunk (en caractères)
-        overlap: Chevauchement entre chunks consécutifs (en caractères)
+        text: Texte a decouper
+        chunk_size: Taille maximale d'un chunk (en caracteres)
+        overlap: Chevauchement entre chunks consecutifs (en caracteres)
 
     Returns:
-        list[str]: Liste des chunks
+        list: Liste des chunks
     """
     chunk_size = chunk_size or CHUNK_SIZE
     overlap = overlap or CHUNK_OVERLAP
@@ -40,9 +40,9 @@ def chunk_text(text: str, chunk_size: int = None, overlap: int = None) -> list[s
     return chunks
 
 
-def chunk_documents(documents, chunk_size: int = None, overlap: int = None):
+def chunk_documents(documents, chunk_size=None, overlap=None):
     """
-    Découpe une liste de documents en chunks.
+    Decoupe une liste de documents en chunks.
 
     Args:
         documents: Liste de dict avec "text" et "metadata"
@@ -50,7 +50,7 @@ def chunk_documents(documents, chunk_size: int = None, overlap: int = None):
         overlap: Chevauchement
 
     Returns:
-        list[dict]: Chaque chunk avec ses métadonnées enrichies
+        list: Chaque chunk avec ses metadonnees enrichies
     """
     chunk_size = chunk_size or CHUNK_SIZE
     overlap = overlap or CHUNK_OVERLAP

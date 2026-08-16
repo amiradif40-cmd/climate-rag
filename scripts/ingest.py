@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 """
-Script de test du pipeline complet Phase 1.
+Script d'ingestion des PDF.
 Usage: python scripts/ingest.py
 
 Ce script :
 1. Charge les PDF du dossier data/raw/ipcc/
 2. Nettoie le texte
-3. Découpe en chunks
-4. Génère les embeddings
-5. Construit l'index FAISS
+3. Decoupe en chunks
+4. Genere les embeddings
+5. Construit ou met a jour l'index FAISS
 6. Teste une recherche
 """
 import sys
 import os
+import pickle
 from pathlib import Path
 
 # Ajoute src/ au PYTHONPATH
@@ -34,55 +35,98 @@ FAISS_INDEX_PATH = os.getenv("FAISS_INDEX_PATH", "data/index/climate_index")
 
 def main():
     print("=" * 60)
-    print("🌍 ClimateRAG - Pipeline d'ingestion Phase 1")
+    print("ClimateRAG - Pipeline d'ingestion")
     print("=" * 60)
 
-    # --- ÉTAPE 1 : Chargement des PDF ---
-    print("\n📚 ÉTAPE 1 : Chargement des PDF")
+    # --- ETAPE 1 : Charger l'index existant si present ---
+    print("\nEtape 0 : Verification de l'index existant")
+    index_path = Path(FAISS_INDEX_PATH)
+    existing_chunks = []
+    
+    if index_path.with_suffix(".faiss").exists() and index_path.with_suffix(".pkl").exists():
+        print("Index existant trouve, chargement...")
+        try:
+            with open(index_path.with_suffix(".pkl"), "rb") as f:
+                existing_chunks = pickle.load(f)
+            print(f"   {len(existing_chunks)} chunks deja indexes")
+        except Exception as e:
+            print(f"   Erreur de chargement : {e}")
+            existing_chunks = []
+    else:
+        print("Aucun index existant, creation d'un nouvel index")
+
+    # --- ETAPE 2 : Chargement des PDF ---
+    print("\nEtape 1 : Chargement des PDF")
     raw_dir = "data/raw/ipcc"
     documents = load_pdfs_from_directory(raw_dir)
 
     if not documents:
-        print(f"⚠️ Aucun PDF trouvé dans {raw_dir}")
+        print(f"Aucun PDF trouve dans {raw_dir}")
         print("Place tes PDF du GIEC dans ce dossier et relance.")
         return
 
-    # --- ÉTAPE 2 : Nettoyage ---
-    print("\n🧹 ÉTAPE 2 : Nettoyage du texte")
-    cleaned = clean_documents(documents)
-    print(f"✅ {len(cleaned)} pages après nettoyage")
+    # --- ETAPE 3 : Filtrer les PDF deja traites ---
+    processed_sources = set()
+    for chunk in existing_chunks:
+        processed_sources.add(chunk["metadata"].get("source", ""))
 
-    # --- ÉTAPE 3 : Chunking ---
-    print("\n✂️ ÉTAPE 3 : Découpage en chunks")
-    chunks = chunk_documents(cleaned)
-    print(f"✅ {len(chunks)} chunks créés")
-    print(f"   Exemple de chunk : {chunks[0]['text'][:150]}...")
+    new_documents = []
+    for doc in documents:
+        source = doc["metadata"].get("source", "")
+        if source not in processed_sources:
+            new_documents.append(doc)
+        else:
+            print(f"   Deja traite : {source}")
 
-    # --- ÉTAPE 4 : Embeddings ---
-    print("\n🧠 ÉTAPE 4 : Génération des embeddings")
+    if not new_documents:
+        print("\nAucun nouveau PDF a traiter. L'index est a jour.")
+        return
+
+    print(f"\n{len(new_documents)} nouveaux PDF a traiter")
+
+    # --- ETAPE 4 : Nettoyage ---
+    print("\nEtape 2 : Nettoyage du texte")
+    cleaned = clean_documents(new_documents)
+    print(f"   {len(cleaned)} pages apres nettoyage")
+
+    # --- ETAPE 5 : Chunking ---
+    print("\nEtape 3 : Decoupage en chunks")
+    new_chunks = chunk_documents(cleaned)
+    print(f"   {len(new_chunks)} nouveaux chunks crees")
+
+    # --- ETAPE 6 : Fusion avec l'existant ---
+    all_chunks = existing_chunks + new_chunks
+    print(f"\nTotal : {len(all_chunks)} chunks ({len(existing_chunks)} existants + {len(new_chunks)} nouveaux)")
+
+    # --- ETAPE 7 : Embeddings ---
+    print("\nEtape 4 : Generation des embeddings")
     embedder = Embedder()
-    texts = [c["text"] for c in chunks]
+    texts = [c["text"] for c in all_chunks]
     embeddings = embedder.encode(texts)
-    print(f"✅ Embeddings générés : shape = {embeddings.shape}")
+    print(f"   Embeddings generes : shape = {embeddings.shape}")
 
-    # --- ÉTAPE 5 : Index FAISS ---
-    print("\n📦 ÉTAPE 5 : Construction de l'index FAISS")
+    # --- ETAPE 8 : Index FAISS ---
+    print("\nEtape 5 : Construction de l'index FAISS")
     store = VectorStore(dimension=embedder.dimension)
-    store.add(embeddings, chunks)
+    store.add(embeddings, all_chunks)
 
     # Sauvegarde
     store.save(FAISS_INDEX_PATH)
+    with open(index_path.with_suffix(".pkl"), "wb") as f:
+        pickle.dump(all_chunks, f)
 
-    # --- ÉTAPE 6 : Test de recherche ---
-    print("\n🔍 ÉTAPE 6 : Test de recherche")
+    print(f"\nIndex sauvegarde : {len(all_chunks)} chunks total")
+
+    # --- ETAPE 9 : Test de recherche ---
+    print("\nEtape 6 : Test de recherche")
     test_questions = [
-        "Pourquoi les canicules deviennent-elles plus fréquentes ?",
-        "Quel est le rôle du changement climatique dans les vagues de chaleur ?",
-        "Quels sont les impacts des canicules sur la santé ?",
+        "Pourquoi les canicules deviennent-elles plus frequentes ?",
+        "Quel est le role du changement climatique dans les vagues de chaleur ?",
+        "Quels sont les impacts des canicules sur la sante ?",
     ]
 
     for question in test_questions:
-        print(f"\n❓ Question : {question}")
+        print(f"\nQuestion : {question}")
         query_embedding = embedder.encode([question])[0]
         results = store.search(query_embedding, k=3)
 
@@ -92,7 +136,7 @@ def main():
             print(f"       {doc['text'][:200]}...")
 
     print("\n" + "=" * 60)
-    print("🎉 Pipeline Phase 1 terminé avec succès !")
+    print("Pipeline termine avec succes !")
     print("=" * 60)
 
 
