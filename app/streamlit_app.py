@@ -330,11 +330,12 @@ st.markdown("""
 <div class="cr-header">
     <div class="cr-eyebrow">Assistant scientifique</div>
     <h1 class="cr-title">ClimateRAG</h1>
-    <p class="cr-tagline">Posez vos questions sur le réchauffement climatique, les canicules et les événements extrêmes - réponses fondées sur les rapports du GIEC, Copernicus et Météo-France.</p>
+    <p class="cr-tagline">Posez vos questions .</p>
     <div class="cr-stripe"></div>
 </div>
 """, unsafe_allow_html=True)
 
+st.info(" Premier chargement ? L'assistant met 20-30 secondes à se réveiller. Merci de patienter !")
 # --- SIDEBAR : QUIZ ---
 with st.sidebar:
     with st.container(key="quiz_panel"):
