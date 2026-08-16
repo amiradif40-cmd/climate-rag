@@ -1,7 +1,7 @@
 .env
 data/index/*.faiss
 data/index/*.pkl
-data/raw/**/*.pdf
+#data/raw/**/*.pdf
 __pycache__/
 *.pyc
 .venv/
