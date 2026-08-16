@@ -55,6 +55,51 @@ st.markdown("""
     --radius-lg: 18px; --radius-md: 12px; --radius-sm: 8px;
     --shadow-card: 0 1px 2px rgba(28, 38, 32, 0.04), 0 8px 24px -12px rgba(28, 38, 32, 0.12);
 }
+
+/* === FIX LISIBILITE GLOBAL - MODE SOMBRE TELEPHONE === */
+html { color-scheme: light !important; }
+.stApp, .stApp * {
+    color: #1C2620 !important;
+    -webkit-text-fill-color: #1C2620 !important;
+}
+.stButton > button[kind="primary"],
+.stButton > button[kind="primary"] * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+a, a:visited, a:hover {
+    color: var(--accent-cool) !important;
+    -webkit-text-fill-color: var(--accent-cool) !important;
+}
+[data-testid="stChatInput"] {
+    background: var(--surface) !important;
+}
+[data-testid="stChatInput"] textarea {
+    background: #FFFFFF !important;
+    color: #1C2620 !important;
+    -webkit-text-fill-color: #1C2620 !important;
+    caret-color: #1C2620 !important;
+}
+[data-testid="stChatInput"] textarea::placeholder {
+    color: #64705F !important;
+    -webkit-text-fill-color: #64705F !important;
+    opacity: 1 !important;
+}
+[data-testid="stChatMessage"] {
+    background: var(--surface) !important;
+}
+[data-testid="stAlert"] * {
+    color: #1C2620 !important;
+    -webkit-text-fill-color: #1C2620 !important;
+    opacity: 1 !important;
+}
+div[role="radiogroup"] label,
+div[role="radiogroup"] label * {
+    color: #1C2620 !important;
+    -webkit-text-fill-color: #1C2620 !important;
+    opacity: 1 !important;
+}
+
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 .stApp { background: var(--bg); color: var(--text); }
 #MainMenu, footer { visibility: hidden; }
@@ -72,26 +117,11 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     [data-testid="stChatMessage"] > div:first-child { display: none !important; }
     [data-testid="stChatInput"] { padding: 0.5rem !important; }
     section[data-testid="stSidebar"] { width: 100% !important; }
-    /* AJOUT : contraste quiz mobile */
-    [data-testid="stRadio"] label,
-    [data-testid="stRadio"] span,
-    [data-testid="stRadio"] p {
-        color: var(--text) !important;
-        font-size: 0.9rem !important;
+    [data-testid="stChatInput"] textarea {
+        background: #FFFFFF !important;
+        color: #1C2620 !important;
+        -webkit-text-fill-color: #1C2620 !important;
     }
-    [data-testid="stRadio"] > div > div > div {
-        background: transparent !important;
-    }
-}
-
-/* AJOUT : contraste radio quiz (tous ecrans) */
-[data-testid="stRadio"] label,
-[data-testid="stRadio"] span,
-[data-testid="stRadio"] p {
-    color: var(--text) !important;
-}
-[data-testid="stRadio"] > div > div > div {
-    background: transparent !important;
 }
 
 .cr-header { text-align: center; padding: 1rem 0 0.25rem; }
