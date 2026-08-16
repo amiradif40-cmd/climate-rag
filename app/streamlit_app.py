@@ -330,7 +330,7 @@ st.markdown("""
 <div class="cr-header">
     <div class="cr-eyebrow">Assistant scientifique</div>
     <h1 class="cr-title">ClimateRAG</h1>
-    <p class="cr-tagline">Posez vos questions .</p>
+    <p class="cr-tagline">Posez vos questions sur le réchauffement climatique, les canicules et les événements extrêmes - réponses fondées sur les rapports du GIEC, Copernicus et Météo-France.</p>
     <div class="cr-stripe"></div>
 </div>
 """, unsafe_allow_html=True)
