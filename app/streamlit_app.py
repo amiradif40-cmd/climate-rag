@@ -35,9 +35,9 @@ except ImportError as e:
 
 # --- PAGE CONFIG ---
 st.set_page_config(
-    page_title="ClimateRAG - Assistant Scientifique Climat",
+    page_title="ClimateRAG",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 # --- DESIGN SYSTEM ---
@@ -58,12 +58,26 @@ st.markdown("""
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 .stApp { background: var(--bg); color: var(--text); }
 #MainMenu, footer { visibility: hidden; }
-.block-container { padding-top: 1.25rem !important; padding-bottom: 7rem !important; max-width: 880px !important; }
+.block-container { padding-top: 1rem !important; padding-bottom: 5rem !important; max-width: 880px !important; }
 
-.cr-header { text-align: center; padding: 1.25rem 0 0.25rem; }
+/* --- MOBILE FIXES --- */
+@media (max-width: 768px) {
+    .block-container { padding: 0.5rem 1rem !important; max-width: 100% !important; }
+    .cr-title { font-size: 2rem !important; }
+    .cr-tagline { font-size: 0.85rem !important; max-width: 100% !important; padding: 0 0.5rem; }
+    .cr-fact-card { padding: 0.8rem 1rem !important; }
+    .cr-fact-text { font-size: 0.95rem !important; }
+    .cr-section-label { margin: 1.5rem 0 0.5rem !important; }
+    [data-testid="stChatMessage"] { padding: 0.5rem !important; margin-bottom: 0.4rem !important; }
+    [data-testid="stChatMessage"] > div:first-child { display: none !important; }
+    [data-testid="stChatInput"] { padding: 0.5rem !important; }
+    section[data-testid="stSidebar"] { width: 100% !important; }
+}
+
+.cr-header { text-align: center; padding: 1rem 0 0.25rem; }
 .cr-eyebrow { font-size: 0.72rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--accent-cool); margin-bottom: 0.5rem; }
 .cr-title { font-family: 'Fraunces', serif; font-weight: 600; font-size: 3rem; color: var(--text); margin: 0; letter-spacing: -0.5px; line-height: 1.05; }
-.cr-tagline { font-size: 0.95rem; color: var(--text-muted); margin: 0.7rem auto 0; max-width: 540px; line-height: 1.5; }
+.cr-tagline { font-size: 0.95rem; color: var(--text-muted); margin: 0.7rem auto 0; max-width: 540px; line-height: 1.5; padding: 0 1rem; }
 .cr-stripe { height: 6px; border-radius: 6px; background: var(--stripes); margin: 1.4rem auto 0; max-width: 320px; }
 
 .cr-section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); margin: 2.2rem 0 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
@@ -87,7 +101,8 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
 .cr-empty-hint { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1.6rem 0; font-style: italic; }
 
-[data-testid="stChatMessage"] { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); margin-bottom: 0.65rem; }
+[data-testid="stChatMessage"] { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); margin-bottom: 0.65rem; padding: 0.75rem 1rem; }
+[data-testid="stChatMessage"] > div:first-child { display: none !important; }
 [data-testid="stChatInput"] { border-radius: var(--radius-lg) !important; }
 [data-testid="stChatInput"] textarea { font-family: 'Inter', sans-serif !important; }
 
@@ -114,21 +129,26 @@ section[data-testid="stSidebar"] { background: var(--surface-muted); border-righ
 
 # --- CONTENU ---
 FACTS = [
-    {"fact": "Chaque seconde, l'equivalent d'un terrain de football de foret disparait sur Terre. Pourtant, un arbre mature peut absorber jusqu'a 22 kg de CO2 par an.", "source": "FAO, 2023"},
-    {"fact": "La fonte des glaciers alpins s'accelere : ils ont perdu la moitie de leur volume depuis 1900. A ce rythme, les Alpes pourraient perdre 90 % de leurs glaciers d'ici 2100.", "source": "GIEC AR6, WGII"},
-    {"fact": "Les canicules tuent plus de personnes chaque annee que tous les autres phenomenes meteorologiques extremes combines.", "source": "OMM, 2021"},
-    {"fact": "Un vol Paris-New York aller-retour emet environ 1 tonne de CO2 par passager, soit l'equivalent de ce qu'un arbre absorbe en 50 ans.", "source": "MyClimate Calculator"},
-    {"fact": "L'ocean a absorbe 90 % de la chaleur supplementaire generee par les activites humaines depuis 1970. Sans lui, la temperature terrestre aurait deja depasse +3 C.", "source": "GIEC AR6, WGI"},
-    {"fact": "En 2023, la temperature moyenne mondiale a depasse +1,5 C sur une annee entiere - un seuil que l'on pensait atteint seulement vers 2040.", "source": "Copernicus, 2024"},
-    {"fact": "Les vagues de chaleur oceaniques sont devenues 20 fois plus frequentes depuis 1980. Elles menacent des milliards d'organismes marins.", "source": "Nature Climate Change, 2022"},
-    {"fact": "Produire un kilo de boeuf genere environ 60 kg d'equivalent CO2 - vingt fois plus qu'un kilo de legumes.", "source": "Poore & Nemecek, Science 2018"},
-    {"fact": "D'ici 2050, les villes europeennes pourraient connaitre jusqu'a +8 C en ete a cause de l'effet d'ilot de chaleur urbain.", "source": "Meteo-France / CNRS"},
-    {"fact": "Le permafrost siberien renferme ~1 500 milliards de tonnes de carbone, pres du double des emissions mondiales actuelles.", "source": "Nature Geoscience, 2023"},
-    {"fact": "Les inondations pourraient couter 48 milliards E/an en Europe d'ici 2050, contre 7,8 milliards aujourd'hui.", "source": "AEE, 2024"},
-    {"fact": "Si chaque foyer europeen remplacait ses ampoules par des LED, l'electricite economisee equivaudrait a la production de dix centrales nucleaires.", "source": "IEA"},
-    {"fact": "La saison des feux de foret dure 75 jours de plus qu'en 1970 en Californie.", "source": "CalFire / CSIRO"},
-    {"fact": "D'ici 2050, 50 a 200 millions de personnes pourraient etre deplacees par le changement climatique.", "source": "Banque mondiale, Groundswell"},
-    {"fact": "L'empreinte carbone moyenne d'un Francais est d'environ 9 tonnes de CO2/an. L'Accord de Paris impose 2 tonnes.", "source": "Haut Conseil pour le Climat, 2024"},
+    {"fact": "Le climat, c'est la meteo sur le long terme. Une vague de froid en hiver ne contredit pas le rechauffement climatique global.", "source": "GIEC AR6, WGI"},
+    {"fact": "La chaleur extreme est l'un des phenomenes meteorologiques les plus meurtriers. Les canicules peuvent causer de nombreuses victimes, souvent de maniere indirecte (aggravation de maladies cardiaques, respiratoires, renales).", "source": "OMM / Sante publique France"},
+    {"fact": "L'ocean a absorbe environ 90 % de la chaleur supplementaire generee par les activites humaines depuis les annees 1970.", "source": "GIEC AR6, WGI"},
+    {"fact": "En 2023, la temperature mondiale annuelle a atteint environ +1,48 C par rapport a l'ere preindustrielle, et 2024 a depasse +1,5 C. Ces depassements temporaires ne signifient pas que l'objectif de long terme de l'Accord de Paris est deja perdu, mais montrent l'acceleration du rechauffement.", "source": "Copernicus C3S / OMM, 2024-2025"},
+    {"fact": "Les vagues de chaleur oceaniques sont devenues nettement plus frequentes et plus intenses depuis les annees 1980. Elles menacent les recifs coralliens et de nombreux ecosystemes marins.", "source": "GIEC AR6, WGI"},
+    {"fact": "Une journee de canicule en ville peut etre 2 a 8 C plus chaude qu'a la campagne a cause de l'ilot de chaleur urbain. Le beton et l'asphalte emmagasinent la chaleur la nuit.", "source": "GIEC AR6, WGII"},
+    {"fact": "Le jet-stream est un puissant courant d'air en haute altitude qui guide les depressions et les anticyclones. Son ralentissement peut bloquer les vagues de chaleur sur une meme region.", "source": "Meteo-France / CNRS"},
+    {"fact": "Les glaciers alpins ont perdu une grande partie de leur masse depuis 1900. Leur fonte s'accelere avec le rechauffement.", "source": "GIEC AR6, WGI"},
+    {"fact": "Le permafrost siberien et arctique renferme d'importantes reserves de carbone. Son rechauffement pourrait liberer du CO2 et du methane, amplifiant le rechauffement.", "source": "GIEC AR6, WGI"},
+    {"fact": "L'humidite joue un role cle dans les canicules : a temperature identique, un air sec est moins dangereux qu'un air humide, car la sueur s'evapore mal quand l'air est deja sature.", "source": "Meteo-France / OMM"},
+    {"fact": "La glace de mer arctique fond en ete, mais cela ne fait pas monter le niveau des oceans (comme la glace dans un verre). En revanche, la fonte des glaciers terrestres et des calottes, si.", "source": "GIEC AR6, WGI"},
+    {"fact": "Le rechauffement climatique ne se traduit pas seulement par des temperatures plus chaudes : il deplace aussi la distribution des temperatures, rendant les extremes plus frequents.", "source": "GIEC AR6, WGI"},
+    {"fact": "Les feux de foret de grande ampleur, comme en Australie en 2019-2020 ou au Canada en 2023, sont intensifies par les conditions chaudes et seches liees au changement climatique.", "source": "GIEC AR6, WGII"},
+    {"fact": "L'Accord de Paris (2015) vise a contenir le rechauffement 'nettement en dessous de 2 C' et a poursuivre les efforts pour le limiter a 1,5 C. Ce sont des objectifs politiques, pas des quotas individuels.", "source": "Accord de Paris / GIEC"},
+    {"fact": "Le GIEC estime que le rechauffement observe entre 2011-2020 et 1850-1900 est d'environ 1,1 C. Il est 'sans equivoque' que ce rechauffement est du aux activites humaines.", "source": "GIEC AR6, WGI"},
+    {"fact": "La Terre n'est pas ronde : elle est legerement aplatie aux poles et renflee a l'equateur, comme une orange pressee. Cette forme influence la distribution de la chaleur.", "source": "NASA / geodesie"},
+    {"fact": "Si vous etes ne avant 1988, vous n'avez jamais vecu une annee plus froide que la moyenne du 20e siecle. Chaque annee depuis est au-dessus.", "source": "GIEC AR6, WGI / NASA GISS"},
+    {"fact": "Les pissenlits poussent mieux dans les villes chaudes qu'a la campagne. L'ilot de chaleur urbain les fait fleurir plus tot et plus gros.", "source": "Etudes d'urbanisation vegetale"},
+    {"fact": "Le CO2 que vous expirez en une journee (environ 1 kg) ne contribue pas au rechauffement : il fait partie du cycle naturel du carbone. Le probleme, c'est le carbone fossile sorti du sous-sol apres des millions d'annees.", "source": "GIEC AR6, WGI"},
+    {"fact": "Les moustiques aiment le changement climatique. Plus il fait chaud et humide, plus ils se reproduisent vite. Certaines maladies comme le dengue gagnent du terrain vers le nord de l'Europe.", "source": "GIEC AR6, WGII / OMS"},
 ]
 
 SUGGESTED_QUESTIONS = [
@@ -140,14 +160,60 @@ SUGGESTED_QUESTIONS = [
 ]
 
 QUIZ_QUESTIONS = [
-    {"question": "Quelle est la principale cause du rechauffement climatique observe depuis le milieu du 20e siecle ?", "options": ["Les variations naturelles du soleil", "Les activites humaines (combustion d'energies fossiles)", "Les eruptions volcaniques", "Le cycle naturel de la Terre"], "correct": 1, "explanation": "Le GIEC est categorique : le rechauffement observe depuis 1950 est du, sans equivoque, aux activites humaines."},
-    {"question": "Quel gaz a effet de serre est le principal responsable du rechauffement d'origine humaine ?", "options": ["Le methane (CH4)", "Le dioxyde de carbone (CO2)", "L'ozone (O3)", "La vapeur d'eau"], "correct": 1, "explanation": "Le CO2, emis surtout par la combustion du charbon, du petrole et du gaz, est le principal gaz responsable."},
-    {"question": "Selon le GIEC (AR6), de combien la temperature mondiale a-t-elle deja augmente ?", "options": ["Environ 0,5 C", "Environ 1,1 C", "Environ 2,5 C", "Environ 4 C"], "correct": 1, "explanation": "L'AR6 estime le rechauffement a environ 1,1 C entre 2011-2020 et 1850-1900."},
-    {"question": "Quelle part de l'exces de chaleur les oceans ont-ils absorbee depuis 1970 ?", "options": ["Environ 25 %", "Environ 50 %", "Environ 90 %", "Environ 10 %"], "correct": 2, "explanation": "Les oceans jouent un role de regulateur thermique majeur : environ 90 % de la chaleur excedentaire y a ete absorbee."},
-    {"question": "Qu'est-ce que le jet-stream ?", "options": ["Un courant marin chaud", "Un puissant courant atmospherique en haute altitude", "Un type de nuage de canicule", "Une mesure de la pollution de l'air"], "correct": 1, "explanation": "Le jet-stream est un puissant courant d'air en haute altitude qui guide les systemes meteorologiques."},
-    {"question": "Quel est l'objectif central de l'Accord de Paris (2015) ?", "options": ["Limiter le rechauffement a 1,5-2 C", "Reduire la population mondiale", "Interdire toute energie fossile d'ici 2030", "Stabiliser le prix du petrole"], "correct": 0, "explanation": "L'Accord de Paris vise a contenir la hausse de la temperature nettement en dessous de 2 C, en poursuivant les efforts pour 1,5 C."},
-    {"question": "Que signifie le sigle GIEC ?", "options": ["Groupe international des ecologistes certifies", "Groupe d'experts intergouvernemental sur l'evolution du climat", "Gestion internationale des emissions de carbone", "Groupe independant d'etude du climat"], "correct": 1, "explanation": "Le GIEC (IPCC) est l'organisme scientifique des Nations Unies charge d'evaluer les connaissances sur le changement climatique."},
-    {"question": "Quelle part de l'empreinte carbone d'un Francais vient des transports et de l'alimentation ?", "options": ["Environ 10 %", "Environ 25 %", "Environ 50 %", "Environ 90 %"], "correct": 2, "explanation": "Selon le Haut Conseil pour le Climat, transports et alimentation representent environ la moitie de l'empreinte carbone moyenne."},
+    {
+        "question": "Quelle est la principale cause du rechauffement climatique observe depuis le milieu du 20e siecle ?",
+        "options": ["Les variations naturelles du soleil", "Les activites humaines (emissions de gaz a effet de serre)", "Les eruptions volcaniques", "Le cycle naturel de la Terre"],
+        "correct": 1,
+        "explanation": "Le GIEC AR6 est categorique : le rechauffement observe depuis 1950 est 'sans equivoque' du aux activites humaines, principalement la combustion d'energies fossiles."
+    },
+    {
+        "question": "Quel gaz a effet de serre est le principal responsable du rechauffement actuel ?",
+        "options": ["Le methane (CH4)", "Le dioxyde de carbone (CO2)", "L'ozone (O3)", "La vapeur d'eau"],
+        "correct": 1,
+        "explanation": "Le CO2, emis surtout par la combustion du charbon, du petrole et du gaz, est le principal contributeur au rechauffement d'origine humaine."
+    },
+    {
+        "question": "Selon le GIEC (AR6), de combien la temperature mondiale a-t-elle deja augmente par rapport a l'ere preindustrielle ?",
+        "options": ["Environ 0,5 C", "Environ 1,1 C", "Environ 2,5 C", "Environ 4 C"],
+        "correct": 1,
+        "explanation": "L'AR6 estime le rechauffement a environ 1,1 C entre la periode 2011-2020 et la periode de reference 1850-1900."
+    },
+    {
+        "question": "Quelle part de la chaleur supplementaire generee par les activites humaines les oceans ont-ils absorbee depuis les annees 1970 ?",
+        "options": ["Environ 25 %", "Environ 50 %", "Environ 90 %", "Environ 10 %"],
+        "correct": 2,
+        "explanation": "Les oceans jouent un role de regulateur thermique majeur : environ 90 % de la chaleur excedentaire y a ete absorbee."
+    },
+    {
+        "question": "Qu'est-ce que le jet-stream ?",
+        "options": ["Un courant marin chaud", "Un puissant courant atmospherique en haute altitude", "Un type de nuage de canicule", "Une mesure de la pollution de l'air"],
+        "correct": 1,
+        "explanation": "Le jet-stream est un puissant courant d'air en haute altitude qui guide les systemes meteorologiques. Son affaiblissement peut bloquer les vagues de chaleur."
+    },
+    {
+        "question": "Quel est l'objectif central de l'Accord de Paris (2015) ?",
+        "options": ["Limiter le rechauffement nettement en dessous de 2 C et poursuivre vers 1,5 C", "Reduire la population mondiale", "Interdire toute energie fossile d'ici 2030", "Stabiliser le prix du petrole"],
+        "correct": 0,
+        "explanation": "L'Accord de Paris vise a contenir la hausse de la temperature mondiale nettement en dessous de 2 C, en poursuivant les efforts pour la limiter a 1,5 C."
+    },
+    {
+        "question": "Que signifie le sigle GIEC ?",
+        "options": ["Groupe international des ecologistes certifies", "Groupe d'experts intergouvernemental sur l'evolution du climat", "Gestion internationale des emissions de carbone", "Groupe independant d'etude du climat"],
+        "correct": 1,
+        "explanation": "Le GIEC (IPCC en anglais) est l'organisme scientifique des Nations Unies charge d'evaluer les connaissances sur le changement climatique."
+    },
+    {
+        "question": "Pourquoi une canicule en ville peut-elle etre plus dangereuse qu'a la campagne ?",
+        "options": ["Parce qu'il y a plus de monde", "A cause de l'ilot de chaleur urbain (beton et asphalte emmagasinent la chaleur)", "Parce que les villes sont plus proches du soleil", "A cause de la pollution uniquement"],
+        "correct": 1,
+        "explanation": "L'ilot de chaleur urbain peut rendre une journee de canicule 2 a 8 C plus chaude en ville qu'a la campagne. Le beton et l'asphalte emmagasinent la chaleur et la restituent la nuit."
+    },
+    {
+        "question": "Le CO2 que vous expirez en respirant contribue-t-il au rechauffement climatique ?",
+        "options": ["Oui, il faut donc moins respirer", "Non, il fait partie du cycle naturel du carbone", "Oui, mais seulement si on mange de la viande", "Non, car le CO2 humain est plus leger que celui des usines"],
+        "correct": 1,
+        "explanation": "Le CO2 expire par les humains et les animaux fait partie du cycle naturel du carbone (absorbe par les plantes, reemis par la respiration). Le probleme vient du carbone fossile (charbon, petrole, gaz) sorti du sous-sol apres des millions d'annees."
+    },
 ]
 
 # --- SESSION STATE ---
@@ -218,7 +284,7 @@ st.markdown("""
 with st.sidebar:
     with st.container(key="quiz_panel"):
         st.markdown('<div class="cr-quiz-title">Quiz Climat</div>', unsafe_allow_html=True)
-        st.markdown('<div class="cr-quiz-sub">Testez vos connaissances sur le changement climatique en 8 questions.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="cr-quiz-sub">Testez vos connaissances sur le changement climatique en 9 questions.</div>', unsafe_allow_html=True)
         total = len(QUIZ_QUESTIONS)
         
         if not st.session_state.quiz_finished:
@@ -374,6 +440,7 @@ if new_prompt:
 st.markdown("""
 <div class="cr-footer">
     ClimateRAG - Reponses fondees sur les rapports du GIEC (AR6), Copernicus et Meteo-France<br>
-    Les reponses sont generees automatiquement - verifiez toujours les sources originales.
+    Les reponses sont generees automatiquement - verifiez toujours les sources originales.<br>
+    Fait avec conviction : comprendre le climat, c'est deja agir.
 </div>
 """, unsafe_allow_html=True)
