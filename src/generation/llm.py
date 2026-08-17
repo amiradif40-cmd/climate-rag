@@ -2,11 +2,9 @@
 Generation de reponses avec Groq API (cloud).
 """
 import os
-import requests
-
+from groq import Groq
 
 LLM_MODEL = os.getenv("LLM_MODEL", "llama-3.3-70b-versatile")
-
 
 class GroqLLM:
     """
@@ -17,32 +15,30 @@ class GroqLLM:
     def __init__(self, api_key=None, model=None):
         self.api_key = api_key or os.getenv("GROQ_API_KEY")
         self.model = model or LLM_MODEL
-        self.url = "https://api.groq.com/openai/v1/chat/completions"
 
         if not self.api_key:
             print("Cle API Groq manquante.")
             print("Cree-en une gratuite sur https://console.groq.com")
+        else:
+            # Initialisation du client officiel Groq
+            self.client = Groq(api_key=self.api_key)
 
     def generate(self, prompt, temperature=0.3, max_tokens=600):
-        headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
-        }
-
-        payload = {
-            "model": self.model,
-            "messages": [
-                {"role": "system", "content": "Tu es un assistant scientifique specialise en climatologie."},
-                {"role": "user", "content": prompt}
-            ],
-            "temperature": temperature,
-            "max_tokens": max_tokens
-        }
+        if not hasattr(self, 'client'):
+            return "[ERREUR] Client Groq non initialisé (clé API manquante)."
 
         try:
-            response = requests.post(self.url, headers=headers, json=payload, timeout=60)
-            response.raise_for_status()
-            return response.json()["choices"][0]["message"]["content"].strip()
+            # Appel natif à l'API Groq (gère automatiquement la bonne URL et les en-têtes)
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": "Tu es un assistant scientifique specialise en climatologie."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=temperature,
+                max_tokens=max_tokens
+            )
+            return response.choices[0].message.content.strip()
         except Exception as e:
             return f"[ERREUR] {str(e)}"
 
