@@ -4,7 +4,7 @@ Generation de reponses avec Groq API (cloud).
 import os
 from groq import Groq
 
-LLM_MODEL = os.getenv("LLM_MODEL", "llama-3.1-70b-versatile")
+LLM_MODEL = os.getenv("LLM_MODEL", "llama-3.1-8b-instant")
 class GroqLLM:
     """
     Client LLM via API Groq - ultra rapide, zero RAM locale.
