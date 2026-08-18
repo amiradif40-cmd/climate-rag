@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 import os
 import random
+import streamlit.components.v1 as components
 
 # --- PATH SETUP ---
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -39,7 +40,16 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
 )
-
+components.html(
+    """
+    <script>
+        setTimeout(function() {
+            window.parent.scrollTo({top: 0, behavior: 'instant'});
+        }, 150);
+    </script>
+    """,
+    height=0,
+)
 # --- DESIGN SYSTEM ---
 st.markdown("""
 <style>

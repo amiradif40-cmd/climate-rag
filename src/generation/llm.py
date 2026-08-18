@@ -4,7 +4,7 @@ Generation de reponses avec Groq API (cloud).
 import os
 from groq import Groq
 
-LLM_MODEL = os.getenv("LLM_MODEL", "openai/gpt-oss-20b")
+LLM_MODEL = os.getenv("LLM_MODEL", "openai/gpt-oss-120b")
 class GroqLLM:
     """
     Client LLM via API Groq - ultra rapide, zero RAM locale.
