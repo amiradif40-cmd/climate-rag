@@ -1,71 +1,50 @@
 """
-Reranking avec CrossEncoder multilingue.
+Reranking avec CrossEncoder.
 Le bi-encoder (embeddings) fait un premier filtre rapide.
 Le cross-encoder relit chaque paire [question, chunk] pour un score plus précis.
 """
-
-import math
+import os
 from sentence_transformers import CrossEncoder
+
+# Modele multilingue (FR/EN/...) - remplace l'ancien cross-encoder anglais
+# uniquement, necessaire depuis que le corpus melange des documents FR et EN.
+RERANKER_MODEL = os.getenv("RERANKER_MODEL", "BAAI/bge-reranker-v2-m3")
 
 
 class Reranker:
     """
-    Reranker basé sur CrossEncoder multilingue (FR/EN).
+    Reranker basé sur CrossEncoder.
     Plus précis que le bi-encoder mais plus lent,
     donc on ne l'utilise que sur les top-k résultats.
     """
 
-    def __init__(self, model_name: str = "BAAI/bge-reranker-v2-m3"):
-        print(f"⏳ Chargement du reranker multilingue {model_name}...")
+    def __init__(self, model_name: str = None):
+        model_name = model_name or RERANKER_MODEL
+        print(f"⏳ Chargement du reranker {model_name}...")
         self.model = CrossEncoder(model_name)
         print(f"✅ Reranker chargé")
-
-    @staticmethod
-    def _sigmoid(x: float) -> float:
-        """
-        Normalise les logits bruts du CrossEncoder entre 0.0 et 1.0.
-        """
-        return 1.0 / (1.0 + math.exp(-x))
-
-    @staticmethod
-    def _get_document_text(doc: dict) -> str:
-        """
-        Récupère le texte du document sans planter si la clé varie.
-        """
-        return (
-            doc.get("text")
-            or doc.get("content")
-            or doc.get("page_content")
-            or ""
-        )
 
     def rerank(self, query: str, documents: list[dict], top_k: int = 5) -> list[dict]:
         if not documents:
             return []
 
-        # Construction des paires [question, texte]
-        pairs = [[query, self._get_document_text(doc)] for doc in documents]
+        pairs = [[query, doc["text"]] for doc in documents]
+        scores = self.model.predict(pairs)
 
-        # Prédiction des logits bruts
-        raw_scores = self.model.predict(pairs)
-
-        # Transformation en score normalisé (0 à 1)
-        ranked = []
-        for doc, score in zip(documents, raw_scores):
-            norm_score = self._sigmoid(float(score))
-            ranked.append((doc, norm_score))
-
-        # Tri décroissant par score
-        ranked.sort(key=lambda x: x[1], reverse=True)
+        ranked = sorted(
+            zip(documents, scores),
+            key=lambda x: x[1],
+            reverse=True
+        )
 
         results = []
         for doc, score in ranked[:top_k]:
             results.append({
                 **doc,
-                "rerank_score": score,
+                "rerank_score": float(score),
                 "metadata": {
                     **doc.get("metadata", {}),
-                    "rerank_score": score
+                    "rerank_score": float(score)
                 }
             })
 
