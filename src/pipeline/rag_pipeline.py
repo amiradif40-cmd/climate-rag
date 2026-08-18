@@ -231,11 +231,8 @@ class ClimateRAG:
 
         # 7. Génération de la réponse
         print("\nÉtape 5 : Génération de la réponse...")
-        #answer = self.llm.generate(prompt)
-        answer = self.llm.generate(
-                     prompt,
-                     temperature=0.0,
-        )
+        answer = self.llm.generate(prompt)
+      
         # 8. Formatage des sources
         sources = format_sources(ranked)
 
