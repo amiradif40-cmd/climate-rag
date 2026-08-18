@@ -15,7 +15,7 @@ class Reranker:
     donc on ne l'utilise que sur les top-k résultats.
     """
 
-    def __init__(self, model_name: str = "BAAI/bge-reranker-m3"):
+    def __init__(self, model_name: str = "BAAI/bge-reranker-v2-m3"):
         print(f"⏳ Chargement du reranker multilingue {model_name}...")
         self.model = CrossEncoder(model_name)
         print(f"✅ Reranker chargé")

@@ -6,7 +6,7 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 
 
-MODEL_EMBEDDING = os.getenv("MODEL_EMBEDDING", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+MODEL_EMBEDDING = os.getenv("MODEL_EMBEDDING", "BAAI/bge-m3")
 
 
 class Embedder:
