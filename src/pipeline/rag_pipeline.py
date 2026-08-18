@@ -12,7 +12,7 @@ from generation.llm import GroqLLM
 from generation.prompt import build_prompt, format_sources
 
 
-TOP_K_RETRIEVAL = int(os.getenv("TOP_K_RETRIEVAL", "30"))
+TOP_K_RETRIEVAL = int(os.getenv("TOP_K_RETRIEVAL", "16"))
 TOP_K_RERANK = int(os.getenv("TOP_K_RERANK", "5"))
 RERANK_SCORE_THRESHOLD = float(
     os.getenv("RERANK_SCORE_THRESHOLD", "0.3")
@@ -48,6 +48,15 @@ class ClimateRAG:
         self.reranker = reranker or Reranker()
         self.llm = llm or GroqLLM()
 
+        # Modele leger dedie a la traduction (gpt-oss-20b = remplacant officiel de
+        # llama-3.1-8b-instant, deprecie par Groq). Plus rapide et moins cher que
+        # d'utiliser le gros modele 120b juste pour traduire une phrase.
+        translation_api_key = getattr(self.llm, "api_key", None)
+        self.translation_llm = GroqLLM(
+            api_key=translation_api_key,
+            model="openai/gpt-oss-20b"
+        ) if translation_api_key else self.llm
+
         self.top_k_retrieval = (
             top_k_retrieval
             if top_k_retrieval is not None
@@ -70,7 +79,15 @@ class ClimateRAG:
             f"Question: {question}"
         )
         try:
-            translation = self.llm.generate(prompt, temperature=0.0)
+            # gpt-oss-20b remplace llama-3.1-8b-instant (deprecie par Groq). C'est aussi
+            # un modele de raisonnement : on force un effort bas et peu de tokens, une
+            # traduction n'a pas besoin de reflexion approfondie.
+            translation = self.translation_llm.generate(
+                prompt,
+                temperature=0.0,
+                max_tokens=200,
+                reasoning_effort="low",
+            )
             clean_translation = translation.strip().strip('"')
             print(f"Traduction pour retrieval : '{question}' -> '{clean_translation}'")
             return clean_translation
