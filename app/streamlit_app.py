@@ -213,10 +213,8 @@ FACTS = [
 ]
 
 SUGGESTED_QUESTIONS = [
-    "Pourquoi les canicules deviennent-elles plus fréquentes ?",
     "Quel est le rôle du changement climatique dans les vagues de chaleur en Europe ?",
     "Quels sont les impacts des canicules sur la santé humaine ?",
-    "Qu'est-ce que le jet-stream et comment influence-t-il la météo en Europe ?",
     "Quel budget carbone reste-t-il pour avoir une probabilité donnée de limiter le réchauffement à 1,5 °C ?",
     "Pourquoi le niveau de la mer augmente-t-il ?",
     "Quel rôle les océans jouent-ils dans le réchauffement climatique ?",
