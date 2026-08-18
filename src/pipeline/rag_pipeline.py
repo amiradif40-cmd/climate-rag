@@ -13,7 +13,7 @@ from generation.prompt import build_prompt, format_sources
 
 
 TOP_K_RETRIEVAL = int(os.getenv("TOP_K_RETRIEVAL", "16"))
-TOP_K_RERANK = int(os.getenv("TOP_K_RERANK", "5"))
+TOP_K_RERANK = int(os.getenv("TOP_K_RERANK", "10"))
 RERANK_SCORE_THRESHOLD = float(
     os.getenv("RERANK_SCORE_THRESHOLD", "0.3")
 )
