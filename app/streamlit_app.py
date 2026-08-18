@@ -3,7 +3,6 @@ import sys
 from pathlib import Path
 import os
 import random
-import streamlit.components.v1 as components
 
 # --- PATH SETUP ---
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -40,16 +39,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
 )
-components.html(
-    """
-    <script>
-        setTimeout(function() {
-            window.parent.scrollTo({top: 0, behavior: 'instant'});
-        }, 150);
-    </script>
-    """,
-    height=0,
-)
+
 # --- DESIGN SYSTEM ---
 st.markdown("""
 <style>
@@ -189,7 +179,7 @@ section[data-testid="stSidebar"] { background: var(--surface-muted); border-righ
 """, unsafe_allow_html=True)
 
 # --- CONTENU ---
-FACTS = [
+FACTS_FR = [
     {"fact": "Le climat correspond à l'évolution statistique du temps atmosphérique sur le long terme. Une vague de froid hivernale ne contredit pas à elle seule le réchauffement climatique global.", "source": "GIEC AR6, WGI"},
     {"fact": "La chaleur extrême est l'un des phénomènes météorologiques les plus meurtriers. Les canicules peuvent avoir de graves conséquences sanitaires, souvent de manière indirecte (aggravation de maladies cardiaques, respiratoires, rénales).", "source": "OMM / Santé publique France"},
     {"fact": "Les océans ont absorbé environ 90 % de l'excès de chaleur du système climatique depuis les années 1970.", "source": "GIEC AR6, WGI"},
@@ -210,6 +200,29 @@ FACTS = [
     {"fact": "Le changement climatique peut modifier la répartition géographique et la saison d'activité de certains moustiques vecteurs de maladies. Des conditions plus chaudes peuvent notamment favoriser l'établissement ou l'extension de certains vecteurs dans de nouvelles régions, mais leur évolution dépend également de l'humidité, des précipitations, des habitats et d'autres facteurs environnementaux.", "source": "GIEC AR6 WGII / OMS"},
     {"fact": "Les concentrations de CO2 dans l'atmosphère sont aujourd'hui nettement plus élevées qu'elles ne l'ont été pendant au moins plusieurs centaines de milliers d'années. L'augmentation récente est principalement due aux activités humaines, notamment à la combustion des combustibles fossiles.", "source": "GIEC AR6, WGI"},
     {"fact": "Le niveau moyen mondial de la mer augmente depuis plusieurs décennies. Cette hausse est principalement due au réchauffement de l'océan, qui provoque sa dilatation thermique, et à la fonte des glaciers et des calottes glaciaires continentales.", "source": "GIEC AR6, WGI"},
+]
+
+FACTS_EN = [
+    {"fact": "Climate refers to the long-term statistical evolution of atmospheric weather. A single winter cold spell does not by itself contradict global warming.", "source": "IPCC AR6, WGI"},
+    {"fact": "Extreme heat is one of the deadliest weather phenomena. Heatwaves can have serious health consequences, often indirectly (worsening of cardiac, respiratory, and kidney conditions).", "source": "WMO / Santé publique France"},
+    {"fact": "The oceans have absorbed about 90% of the excess heat in the climate system since the 1970s.", "source": "IPCC AR6, WGI"},
+    {"fact": "In 2024, the global average temperature was around +1.60°C above the 1850-1900 baseline, after about +1.48°C in 2023 according to Copernicus. Exceeding 1.5°C in a single calendar year does not by itself mean the Paris Agreement's long-term limit has been permanently breached.", "source": "Copernicus C3S, Global Climate Highlights 2024"},
+    {"fact": "Marine heatwaves have become markedly more frequent and/or more intense since the 1980s. They threaten coral reefs and many marine ecosystems.", "source": "IPCC AR6, WGI"},
+    {"fact": "During a hot spell, the urban heat island effect can keep temperatures higher in cities than in the countryside, especially at night. The gap varies a lot by city, weather, and local conditions, and can reach several degrees.", "source": "Météo-France — Urban Heat Island"},
+    {"fact": "The jet stream is a fast high-altitude air current that influences the path of weather systems. Certain atmospheric blocking patterns linked to the jet stream's circulation can favor the persistence of hot spells in a region.", "source": "IPCC AR6, WG1"},
+    {"fact": "Alpine glaciers have lost a large amount of mass since 1900. Their melting is accelerating with warming.", "source": "IPCC AR6, WGI"},
+    {"fact": "Siberian and Arctic permafrost holds large amounts of carbon. Its warming could release CO2 and methane, contributing to amplified warming.", "source": "IPCC AR6, WGI"},
+    {"fact": "Humidity strongly affects heat stress: when the air is very humid, sweat evaporates less efficiently and the body struggles more to release heat. The risk also depends on temperature, wind, radiation, and individual vulnerability.", "source": "WMO / WHO"},
+    {"fact": "Arctic sea ice melts in summer, but this does not raise ocean levels (like ice melting in a glass). However, the melting of land glaciers and continental ice sheets does.", "source": "IPCC AR6, WGI"},
+    {"fact": "Climate change doesn't just mean warmer temperatures: it also shifts the temperature distribution and increases the frequency and/or intensity of many hot extremes.", "source": "IPCC AR6, WGI"},
+    {"fact": "Large-scale wildfires, such as those in Australia in 2019-2020 or Canada in 2023, are intensified by the hot, dry conditions linked to climate change in several regions.", "source": "IPCC AR6, WGII"},
+    {"fact": "The Paris Agreement (2015) aims to keep the global temperature increase well below 2°C and to pursue efforts to limit it to 1.5°C. These are collective policy goals, not individual quotas.", "source": "Paris Agreement / IPCC"},
+    {"fact": "The IPCC estimates that average warming over 2011-2020 relative to 1850-1900 is about 1.1°C. It is unequivocal that this warming is due to human activities.", "source": "IPCC AR6, WGI"},
+    {"fact": "Earth is not a perfect sphere: it is slightly flattened at the poles and bulges at the equator. This shape influences how heat is distributed across its surface.", "source": "NASA / geodesy"},
+    {"fact": "The CO2 you exhale in a day (about 1 kg) does not contribute to warming: it's part of the natural carbon cycle. The problem comes from fossil carbon (coal, oil, gas) extracted from underground after millions of years.", "source": "IPCC AR6, WGI"},
+    {"fact": "Climate change can alter the geographic range and active season of some disease-carrying mosquitoes. Warmer conditions can favor the establishment or spread of certain vectors into new regions, but their evolution also depends on humidity, rainfall, habitats, and other environmental factors.", "source": "IPCC AR6 WGII / WHO"},
+    {"fact": "Atmospheric CO2 concentrations today are markedly higher than at any point in at least several hundred thousand years. The recent increase is mainly due to human activities, particularly the burning of fossil fuels.", "source": "IPCC AR6, WGI"},
+    {"fact": "Global mean sea level has been rising for several decades. This rise is mainly due to ocean warming, which causes thermal expansion, and to the melting of glaciers and continental ice sheets.", "source": "IPCC AR6, WGI"},
 ]
 
 SUGGESTED_QUESTIONS = [
