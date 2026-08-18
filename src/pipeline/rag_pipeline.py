@@ -1,6 +1,6 @@
 """
-Pipeline RAG complet : Retrieval + Augmentation + Generation.
-Orchestre tous les composants pour répondre à une question.
+Pipeline RAG complet : Retrieval Dual (FR + EN) + Augmentation + Generation.
+Orchestre tous les composants pour répondre à une question sur un corpus mixte (GIEC + Météo-France).
 """
 
 import os
@@ -21,16 +21,16 @@ RERANK_SCORE_THRESHOLD = float(
 
 class ClimateRAG:
     """
-    Pipeline ClimateRAG complet.
+    Pipeline ClimateRAG complet avec support multilingue hybride.
 
     Flux :
-    1. Traduction de la question (FR -> EN) pour la recherche
-    2. Embedding de la question
-    3. Retrieval FAISS
-    4. Reranking avec la requête anglaise
+    1. Traduction de la question (FR -> EN) pour les sources anglophones
+    2. Double Retrieval FAISS (recherche FR + recherche EN)
+    3. Déduplication des résultats FAISS
+    4. Reranking unifié sur la question originale en français
     5. Fallback si le score du reranker est trop faible
-    6. Construction du prompt avec la question originale (FR)
-    7. Génération LLM (temperature=0.0)
+    6. Construction du prompt
+    7. Génération LLM déterministe (temperature=0.0)
     8. Retour de la réponse et des sources
     """
 
@@ -62,8 +62,7 @@ class ClimateRAG:
 
     def _translate_to_english(self, question: str) -> str:
         """
-        Traduite la question en anglais pour maximiser la similarité vectorielle
-        avec les documents du GIEC qui sont rédigés en anglais.
+        Traduite la question en anglais pour maximiser la recherche dans le GIEC.
         """
         prompt = (
             "Translate the following user question into English for a vector search engine. "
@@ -92,8 +91,7 @@ class ClimateRAG:
     @staticmethod
     def _get_document_text(document):
         """
-        Récupère le texte du document sans provoquer d'erreur
-        si la clé n'existe pas.
+        Récupère le texte du document sans provoquer d'erreur.
         """
         return (
             document.get("text")
@@ -107,7 +105,7 @@ class ClimateRAG:
         """
         Affiche les résultats FAISS pour le diagnostic.
         """
-        print(f"\nNombre de résultats FAISS : {len(results)}")
+        print(f"\nNombre de résultats FAISS (après déduplication) : {len(results)}")
 
         for i, result in enumerate(results[:10]):
             document = result.get("document", {})
@@ -156,30 +154,47 @@ class ClimateRAG:
 
     def ask(self, question: str):
         """
-        Répond à une question à partir des documents indexés.
+        Répond à une question à partir des documents indexés (FR + EN).
         """
 
         print("\n" + "=" * 80)
         print("Question originale :", question)
         print("=" * 80)
 
-        # 1. Traduction de la question pour la recherche
-        search_query = self._translate_to_english(question)
+        # 1. Traduction pour les sources anglaises
+        search_query_en = self._translate_to_english(question)
 
-        # 2. Embedding de la question (version anglaise)
-        print("\nÉtape 1 : Embedding de la question...")
-        query_embedding = self.embedder.encode([search_query])[0]
+        # 2. Embedding des deux requêtes (FR et EN)
+        print("\nÉtape 1 : Embedding de la question (FR + EN)...")
+        emb_fr = self.embedder.encode([question])[0]
+        emb_en = self.embedder.encode([search_query_en])[0]
 
-        # 3. Retrieval FAISS
+        # 3. Double Retrieval FAISS
+        k_half = max(1, self.top_k_retrieval // 2)
         print(
-            f"Étape 2 : Retrieval FAISS "
-            f"(top {self.top_k_retrieval})..."
+            f"Étape 2 : Retrieval FAISS dual "
+            f"({k_half} FR + {k_half} EN)..."
         )
 
-        results = self.vector_store.search(
-            query_embedding,
-            k=self.top_k_retrieval
-        )
+        results_fr = self.vector_store.search(emb_fr, k=k_half) or []
+        results_en = self.vector_store.search(emb_en, k=k_half) or []
+
+        # Fusion et déduplication des paires source/page/texte
+        seen_keys = set()
+        results = []
+        for res in results_fr + results_en:
+            doc = res.get("document", {})
+            metadata = doc.get("metadata", {})
+
+            unique_key = (
+                metadata.get("source", ""),
+                metadata.get("page", ""),
+                self._get_document_text(doc)[:100]
+            )
+
+            if unique_key not in seen_keys:
+                seen_keys.add(unique_key)
+                results.append(res)
 
         if not results:
             print("Aucun résultat FAISS trouvé.")
@@ -202,14 +217,14 @@ class ClimateRAG:
             metadata = document.setdefault("metadata", {})
             metadata["faiss_score"] = result.get("score", 0)
 
-        # 4. Reranking (en utilisant la requête traduite en anglais)
+        # 4. Reranking unifié sur la question originale en français
         print(
             f"\nÉtape 3 : Reranking "
             f"(top {self.top_k_rerank})..."
         )
 
         ranked = self.reranker.rerank(
-            search_query,
+            question,
             documents,
             top_k=self.top_k_rerank
         )
@@ -218,7 +233,7 @@ class ClimateRAG:
 
         self._print_reranked_results(ranked)
 
-        # 5. Vérification du score du reranker
+        # 5. Vérification du score de reranking
         best_score = (
             self._get_rerank_score(ranked[0])
             if ranked
@@ -228,7 +243,7 @@ class ClimateRAG:
         print("\nMeilleur score rerank :", best_score)
         print("Seuil utilisé :", RERANK_SCORE_THRESHOLD)
 
-        # 6. Fallback si le score est trop faible
+        # 6. Fallback si le score du reranker est insuffisant
         if not ranked or best_score < RERANK_SCORE_THRESHOLD:
             print(
                 "\nFallback : scores de reranking trop faibles."
@@ -248,15 +263,15 @@ class ClimateRAG:
                         0.5
                     )
 
-        # 7. Construction du prompt (avec la question ORIGINALE en français)
+        # 7. Prompt scientifique en français
         print("\nÉtape 4 : Construction du prompt scientifique...")
         prompt = build_prompt(question, ranked)
 
-        # 8. Génération de la réponse (déterministe avec temperature=0.0)
+        # 8. Génération déterministe (temperature=0.0)
         print("\nÉtape 5 : Génération de la réponse...")
         answer = self.llm.generate(prompt, temperature=0.0)
 
-        # 9. Formatage des sources
+        # 9. Formattage des sources
         sources = format_sources(ranked)
 
         print("\nPipeline terminé.")
